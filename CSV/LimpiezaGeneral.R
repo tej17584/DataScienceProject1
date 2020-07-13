@@ -27,6 +27,7 @@ library(RWeka)
 library(neural)
 library(dummy)
 library(neuralnet)
+library(stringi)
 ##------------------FIN ZONA LIBRERIAS------------------
 
 getwd()
@@ -55,8 +56,15 @@ Suchi = read.csv("suchitepequez.csv",stringsAsFactors = FALSE, na.strings = TRUE
 Toto = read.csv("totonicapan.csv",stringsAsFactors = FALSE, na.strings = TRUE, strip.white = TRUE,sep = ";",encoding="UTF-8")
 Zacapa = read.csv("zacapa.csv",stringsAsFactors = FALSE, na.strings = TRUE, strip.white = TRUE,sep = ";" , encoding="UTF-8" )
 
+#Unimos toda la data
+FULLDATASET <- rbind(AVerapaz, BVerapaz,Chima,Chiqui,Progreso,Escuintla,Guatemala,Huehue,Izabal,Jalapa,Jutiapa,Peten,
+                     Quetza,Quiche,Reta,Sacate,SMarcos,SRosa,Solola,Suchi,Toto, Zacapa )
 
-FULLDATASET <- merge (Df1, Df2, by = "Cultivo")
+Encoding(FULLDATASET$ESTABLECIMIENTO)
+unique(FULLDATASET$DEPARTAMENTO)
 
+
+str(FULLDATASET)
+str(FULLDATASET)
 
 
