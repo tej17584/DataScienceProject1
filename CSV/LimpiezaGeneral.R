@@ -60,11 +60,30 @@ Zacapa = read.csv("zacapa.csv",stringsAsFactors = FALSE, na.strings = TRUE, stri
 FULLDATASET <- rbind(AVerapaz, BVerapaz,Chima,Chiqui,Progreso,Escuintla,Guatemala,Huehue,Izabal,Jalapa,Jutiapa,Peten,
                      Quetza,Quiche,Reta,Sacate,SMarcos,SRosa,Solola,Suchi,Toto, Zacapa )
 
-Encoding(FULLDATASET$ESTABLECIMIENTO)
+
+## Revisamos que esten los departamentos
 unique(FULLDATASET$DEPARTAMENTO)
 
+##Quitamos las tildes
+FULLDATASET$ESTABLECIMIENTO<-stri_trans_general(FULLDATASET$ESTABLECIMIENTO,"Latin-ASCII")
+FULLDATASET$MODALIDAD<-stri_trans_general(FULLDATASET$MODALIDAD,"Latin-ASCII")
+FULLDATASET$DIRECTOR<-stri_trans_general(FULLDATASET$DIRECTOR,"Latin-ASCII")
+FULLDATASET$DIRECCION<-stri_trans_general(FULLDATASET$DIRECCION,"Latin-ASCII")
 
-str(FULLDATASET)
-str(FULLDATASET)
 
-
+##Contamos NA
+sum(is.na(FULLDATASET$TELEFONO))#50
+sum(is.na(FULLDATASET$DISTRITO))
+sum(is.na(FULLDATASET$DEPARTAMENTO))
+sum(is.na(FULLDATASET$MUNICIPIO))
+sum(is.na(FULLDATASET$ESTABLECIMIENTO))
+sum(is.na(FULLDATASET$DIRECCION))
+sum(is.na(FULLDATASET$SUPERVISOR))
+sum(is.na(FULLDATASET$NIVEL))
+sum(is.na(FULLDATASET$AREA))
+sum(is.na(FULLDATASET$STATUS))
+sum(is.na(FULLDATASET$MODALIDAD))
+sum(is.na(FULLDATASET$JORNADA))
+sum(is.na(FULLDATASET$PLAN))
+sum(is.na(FULLDATASET$DEPARTAMENTAL))
+sum(is.na(FULLDATASET$SUPERVISOR))
