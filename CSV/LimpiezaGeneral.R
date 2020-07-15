@@ -31,7 +31,8 @@ library(stringi)
 ##------------------FIN ZONA LIBRERIAS------------------
 
 getwd()
-setwd("C:/Users/josea/Desktop/Universidad/2020/DataScience/Proyecto1/DataScienceProject1/CSV")
+##setwd("C:/Users/josea/Desktop/Universidad/2020/DataScience/Proyecto1/DataScienceProject1/CSV")
+setwd("C:/Users/Diego Sevilla/Documents/UVG Semestres/Repositorios/8vo Semestre/Data science/DataScienceProject1/CSV")
 
 AVerapaz = read.csv("altaVerapaz.csv",stringsAsFactors = FALSE, na.strings = TRUE, strip.white = TRUE,sep = ";", encoding="UTF-8" )
 BVerapaz = read.csv("bajaVerapaz.csv",stringsAsFactors = FALSE, na.strings = TRUE, strip.white = TRUE,sep = ";" , encoding="UTF-8" )
@@ -71,19 +72,52 @@ FULLDATASET$DIRECTOR<-stri_trans_general(FULLDATASET$DIRECTOR,"Latin-ASCII")
 FULLDATASET$DIRECCION<-stri_trans_general(FULLDATASET$DIRECCION,"Latin-ASCII")
 
 
-##Contamos NA
-sum(is.na(FULLDATASET$TELEFONO))#50
-sum(is.na(FULLDATASET$DISTRITO))
+##Se reemplazan espacios en blanco por NA en cada columna
+FULLDATASET$TELEFONO[FULLDATASET$TELEFONO==""] <- NA
+FULLDATASET$DISTRITO[FULLDATASET$DISTRITO==""] <- NA
+FULLDATASET$DEPARTAMENTO[FULLDATASET$DEPARTAMENTO==""] <- NA
+FULLDATASET$MUNICIPIO[FULLDATASET$MUNICIPIO==""] <- NA
+FULLDATASET$ESTABLECIMIENTO[FULLDATASET$ESTABLECIMIENTO==""] <- NA
+FULLDATASET$DIRECCION[FULLDATASET$DIRECCION==""] <- NA
+FULLDATASET$DIRECTOR[FULLDATASET$DIRECTOR==""] <- NA
+FULLDATASET$SUPERVISOR[FULLDATASET$SUPERVISOR==""] <- NA
+FULLDATASET$NIVEL[FULLDATASET$NIVEL==""] <- NA
+FULLDATASET$AREA[FULLDATASET$AREA==""] <- NA
+FULLDATASET$STATUS[FULLDATASET$STATUS==""] <- NA
+FULLDATASET$MODALIDAD[FULLDATASET$MODALIDAD==""] <- NA
+FULLDATASET$JORNADA[FULLDATASET$JORNADA==""] <- NA
+FULLDATASET$PLAN[FULLDATASET$PLAN==""] <- NA
+FULLDATASET$DEPARTAMENTAL[FULLDATASET$DEPARTAMENTAL==""] <- NA
+FULLDATASET$SUPERVISOR[FULLDATASET$SUPERVISOR==""] <- NA
+
+View(FULLDATASET)
+##Se cuentan NA en cada columna
+sum(is.na(FULLDATASET$TELEFONO))        #1780
+sum(is.na(FULLDATASET$DISTRITO))        #323
 sum(is.na(FULLDATASET$DEPARTAMENTO))
 sum(is.na(FULLDATASET$MUNICIPIO))
-sum(is.na(FULLDATASET$ESTABLECIMIENTO))
-sum(is.na(FULLDATASET$DIRECCION))
-sum(is.na(FULLDATASET$SUPERVISOR))
-sum(is.na(FULLDATASET$NIVEL))
-sum(is.na(FULLDATASET$AREA))
+sum(is.na(FULLDATASET$ESTABLECIMIENTO)) #1
+sum(is.na(FULLDATASET$DIRECCION))       #94
+sum(is.na(FULLDATASET$DIRECTOR))        #3383
+sum(is.na(FULLDATASET$SUPERVISOR))      #325
+sum(is.na(FULLDATASET$NIVEL)) 
+sum(is.na(FULLDATASET$AREA)) 
 sum(is.na(FULLDATASET$STATUS))
 sum(is.na(FULLDATASET$MODALIDAD))
 sum(is.na(FULLDATASET$JORNADA))
 sum(is.na(FULLDATASET$PLAN))
 sum(is.na(FULLDATASET$DEPARTAMENTAL))
-sum(is.na(FULLDATASET$SUPERVISOR))
+sum(is.na(FULLDATASET$SUPERVISOR))      #325
+
+View(FULLDATASET)
+
+##Reemplazamos "--", "---", "----", etc. por NA
+FULLDATASET$TELEFONO[FULLDATASET$TELEFONO=="--"] <- NA
+
+##....
+
+
+
+
+
+
