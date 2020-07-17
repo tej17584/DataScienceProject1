@@ -145,7 +145,11 @@ sum(is.na(FULLDATASET$SUPERVISOR))      #325
 
 View(FULLDATASET)
 
+#removemos duplicados
 
-
+#Encontramos los duplicados (sin contar el codigo sino que todos los demas campos)
+Duplicados<-FULLDATASET[duplicated(FULLDATASET[,2:17]),]
+#Eliminamos los duplicados y los volvemos asignar
+FULLDATASET<-FULLDATASET[!duplicated(FULLDATASET[,2:17]),]
 
 
