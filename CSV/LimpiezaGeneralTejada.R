@@ -147,5 +147,43 @@ View(FULLDATASET)
 
 
 
+## LIMPIEZA ESPECIFICA JALAPA, CHIQUIMULA, EL PROGRESO, ZACAPA, IZABAL--------------------
+
+DATA5<-FULLDATASET[which(FULLDATASET$DEPARTAMENTO == "CHIQUIMULA" 
+                         | FULLDATASET$DEPARTAMENTO == "JALAPA"
+                         | FULLDATASET$DEPARTAMENTO == "EL PROGRESO"
+                         | FULLDATASET$DEPARTAMENTO == "ZACAPA"
+                         | FULLDATASET$DEPARTAMENTO == "IZABAL"),]
 
 
+##Se cuentan NA en cada columna
+sum(is.na(DATA5$TELEFONO))        #67
+sum(is.na(DATA5$DISTRITO))        #8
+sum(is.na(DATA5$DEPARTAMENTO))
+sum(is.na(DATA5$MUNICIPIO))
+sum(is.na(DATA5$ESTABLECIMIENTO)) #0
+sum(is.na(DATA5$DIRECCION))       #7
+sum(is.na(DATA5$DIRECTOR))        #144
+sum(is.na(DATA5$SUPERVISOR))      #8
+sum(is.na(DATA5$NIVEL)) 
+sum(is.na(DATA5$AREA)) 
+sum(is.na(DATA5$STATUS))
+sum(is.na(DATA5$MODALIDAD))
+sum(is.na(DATA5$JORNADA))
+sum(is.na(DATA5$PLAN))
+sum(is.na(DATA5$DEPARTAMENTAL))
+sum(is.na(DATA5$SUPERVISOR))      #8
+
+#Agregamos un numero de linea
+DATA5$NO_LINEA <- seq.int(nrow(DATA5))
+#Reordenamos para que este al inicio
+DATA5<-DATA5[,c(18,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17)]
+
+#Encontramos los duplicados (sin contar el codigo sino que todos los demas campos)
+Duplicados<-DATA5[duplicated(DATA5[,3:18]),]
+#Eliminamos los duplicados y los volvemos asignar
+DATA5_1<-DATA5[!duplicated(DATA5[,3:18]),]
+
+
+
+##/--------------**--* FINALIZA LIMPIEZA ESPECÍFICA
