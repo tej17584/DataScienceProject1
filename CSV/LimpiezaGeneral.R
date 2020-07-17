@@ -153,3 +153,132 @@ Duplicados<-FULLDATASET[duplicated(FULLDATASET[,2:17]),]
 FULLDATASET<-FULLDATASET[!duplicated(FULLDATASET[,2:17]),]
 
 
+
+
+
+
+
+#------------------------TEJADA ZONE----------------------
+
+## LIMPIEZA ESPECIFICA JALAPA, CHIQUIMULA, EL PROGRESO, ZACAPA, IZABAL--------------------
+
+DATA5<-FULLDATASET[which(FULLDATASET$DEPARTAMENTO == "CHIQUIMULA" 
+                         | FULLDATASET$DEPARTAMENTO == "JALAPA"
+                         | FULLDATASET$DEPARTAMENTO == "EL PROGRESO"
+                         | FULLDATASET$DEPARTAMENTO == "ZACAPA"
+                         | FULLDATASET$DEPARTAMENTO == "IZABAL"),]
+
+
+##Se cuentan NA en cada columna
+sum(is.na(DATA5$TELEFONO))        #67
+sum(is.na(DATA5$DISTRITO))        #8
+sum(is.na(DATA5$DEPARTAMENTO))
+sum(is.na(DATA5$MUNICIPIO))
+sum(is.na(DATA5$ESTABLECIMIENTO)) #0
+sum(is.na(DATA5$DIRECCION))       #7
+sum(is.na(DATA5$DIRECTOR))        #142
+sum(is.na(DATA5$SUPERVISOR))      #8
+sum(is.na(DATA5$NIVEL)) 
+sum(is.na(DATA5$AREA)) 
+sum(is.na(DATA5$STATUS))
+sum(is.na(DATA5$MODALIDAD))
+sum(is.na(DATA5$JORNADA))
+sum(is.na(DATA5$PLAN))
+sum(is.na(DATA5$DEPARTAMENTAL))
+sum(is.na(DATA5$SUPERVISOR))      #8
+
+#Agregamos un numero de linea
+DATA5$NO_LINEA <- seq.int(nrow(DATA5))
+#Reordenamos para que este al inicio
+DATA5<-DATA5[,c(18,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17)]
+
+
+#miramos palabras mas cortas con SIGLAS
+for (variable in DATA5$ESTABLECIMIENTO) {
+  if(nchar(variable)<5)
+  {
+    print(variable)
+  }
+}
+
+#Resultados es "INED"
+DATA5[which(DATA5$ESTABLECIMIENTO == "INED"),]
+DATA5$ESTABLECIMIENTO[DATA5$ESTABLECIMIENTO == "INED"] <- "INSTITUTO NACIONAL DE EDUCACION DIVERSIFICADA"
+
+#con otra funcion ahora
+
+lista<-c();
+for (variable in DATA5$ESTABLECIMIENTO) {
+  lista<-c(lista,substr(variable, 0, regexpr(' ', variable)))
+}
+
+lista2<-as.data.frame(lista)
+distinct(lista2)
+
+
+#PATRON DE "LICEO-----------------------
+# create a pattern to use (the same as you would do when using the LIKE operator)
+ptn = '^"LICEO.*?'  # gets beige and berry but not blueberry
+# execute a pattern-matching function on your data to create an index vector
+ndx = grep(ptn, DATA5$ESTABLECIMIENTO, perl=T)
+# use this index vector to extract the rows you want from the data frome:
+selected_rows = DATA5[ndx,]
+
+#las filas a cambiar son la 9 y 467
+DATA5$ESTABLECIMIENTO[DATA5$ESTABLECIMIENTO == '"LICEO LA SALLE"'] <- "LICEO LA SALLE"
+DATA5$ESTABLECIMIENTO[DATA5$ESTABLECIMIENTO == '"LICEO EDUCACIONAL MIXTO DEI VERBUM"'] <- "LICEO EDUCACIONAL MIXTO DEI VERBUM"
+
+
+
+#PATRON DE "INST.-----------------------
+# create a pattern to use (the same as you would do when using the LIKE operator)
+ptn2 = '^INST. .*?'  # gets beige and berry but not blueberry
+# execute a pattern-matching function on your data to create an index vector
+ndx2 = grep(ptn2, DATA5$ESTABLECIMIENTO, perl=T)
+# use this index vector to extract the rows you want from the data frome:
+selected_rows2 = DATA5[ndx2,]
+
+#las filas a cambiar son la 73
+DATA5$ESTABLECIMIENTO[DATA5$ESTABLECIMIENTO == "INST. PRIV. MIXTO DE EDUC. DIVERSIFICADA ESCUELA DE CIENCIAS COMERCIALES"] <- 
+  "INSTITUTO PRIVADO MIXTO DE EDUCACION DIVERSIFICADA ESCUELA DE CIENCIAS COMERCIALES"
+
+
+#PATRON DE 'LICEO-----------------------
+# create a pattern to use (the same as you would do when using the LIKE operator)
+ptn3 = "^'LICEO.*?"  # gets beige and berry but not blueberry
+# execute a pattern-matching function on your data to create an index vector
+ndx3 = grep(ptn3, DATA5$ESTABLECIMIENTO, perl=T)
+# use this index vector to extract the rows you want from the data frome:
+selected_rows3 = DATA5[ndx3,]
+
+DATA5$ESTABLECIMIENTO[DATA5$ESTABLECIMIENTO == "'LICEO SAN JOSE'"] <- "LICEO SAN JOSE"
+
+
+#PATRON DE 'LICEO-----------------------
+# create a pattern to use (the same as you would do when using the LIKE operator)
+ptn4 = "^INED.*?"  # gets beige and berry but not blueberry
+# execute a pattern-matching function on your data to create an index vector
+ndx4 = grep(ptn4, DATA5$ESTABLECIMIENTO, perl=T)
+# use this index vector to extract the rows you want from the data frome:
+selected_rows4 = DATA5[ndx4,]
+
+DATA5$ESTABLECIMIENTO[DATA5$ESTABLECIMIENTO == "INED PROF. HUGO LEONEL SANCE CETINO"] <- 
+  "INSTITUTO NACIONAL DE EDUCACION DIVERSIFICADA PROF. HUGO LEONEL SANCE CETINO"
+DATA5$ESTABLECIMIENTO[DATA5$ESTABLECIMIENTO == "INED ADSCRITO AL INSTITUTO NACIONAL DE EDUCACION BASICA EXPERIMENTAL CON ORIENTACION OCUPACIONAL DR. LUIS PASTEUR"] <- 
+  "INSTITUTO NACIONAL DE EDUCACION DIVERSIFICADA ADSCRITO AL INSTITUTO NACIONAL DE EDUCACION BASICA EXPERIMENTAL CON ORIENTACION OCUPACIONAL DR. LUIS PASTEUR"
+DATA5$ESTABLECIMIENTO[DATA5$ESTABLECIMIENTO == "INED TECNICO MORALENSE, ITM"] <- 
+  "INSTITUTO NACIONAL DE EDUCACION DIVERSIFICADA TECNICO MORALENSE, ITM"
+
+#removemos la data de las variables
+rm(ptn,ptn2,ptn3,ptn4)
+rm(ndx,ndx2,ndx3,ndx4)
+rm(lista, variable)
+rm(selected_rows,selected_rows2,selected_rows3,selected_rows4, lista2)
+
+#eliminamos la columna de numero
+DATA5$NO_LINEA<-NULL
+#LIMPIEZA FINAL
+View(DATA5)
+str(DATA5)
+##/--------------**--* FINALIZA LIMPIEZA ESPECÍFICA JALAPA, CHIQUIMULA, EL PROGRESO, ZACAPA, IZABAL
+#------------------FIN TEJADA ZONE------------------------------
