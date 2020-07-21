@@ -7,10 +7,10 @@
 ## Oscar Juarez CARNET
 ## Jesus Belches
 ## Proyecto No1: Limpieza de datos
-## Catedrático: Lynette García
+## Catedr?tico: Lynette Garc?a
 ###################################################
 
-
+install.packages("rJava")
 
 ##-----------------ZONA LIBRERIAS---------------------------
 library(dplyr)
@@ -31,8 +31,9 @@ library(stringi)
 ##------------------FIN ZONA LIBRERIAS------------------
 
 getwd()
-##setwd("C:/Users/josea/Desktop/Universidad/2020/DataScience/Proyecto1/DataScienceProject1/CSV")
-setwd("C:/Users/Diego Sevilla/Documents/UVG Semestres/Repositorios/8vo Semestre/Data science/DataScienceProject1/CSV")
+#setwd("C:/Users/josea/Desktop/Universidad/2020/DataScience/Proyecto1/DataScienceProject1/CSV")
+#setwd("C:/Users/Diego Sevilla/Documents/UVG Semestres/Repositorios/8vo Semestre/Data science/DataScienceProject1/CSV")
+#setwd("/home/paul/Documents/Semestre2/dataScience/DataScienceProject1/CSV")
 
 AVerapaz = read.csv("altaVerapaz.csv",stringsAsFactors = FALSE, na.strings = TRUE, strip.white = TRUE,sep = ";", encoding="UTF-8" )
 BVerapaz = read.csv("bajaVerapaz.csv",stringsAsFactors = FALSE, na.strings = TRUE, strip.white = TRUE,sep = ";" , encoding="UTF-8" )
@@ -142,10 +143,4 @@ sum(is.na(FULLDATASET$JORNADA))
 sum(is.na(FULLDATASET$PLAN))
 sum(is.na(FULLDATASET$DEPARTAMENTAL))
 sum(is.na(FULLDATASET$SUPERVISOR))      #325
-
-View(FULLDATASET)
-
-
-
-
 
