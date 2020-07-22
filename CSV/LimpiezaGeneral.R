@@ -34,8 +34,8 @@ library(stringr)
 getwd()
 setwd("C:/Users/josea/Desktop/Universidad/2020/DataScience/Proyecto1/DataScienceProject1/CSV")
 #setwd("C:/Users/josea/Desktop/Universidad/2020/DataScience/Proyecto1/DataScienceProject1/CSV")
-#setwd("/home/paul/Documents/Semestre2/dataScience/DataScienceProject1/CSV")
-setwd("C:/Users/Diego Sevilla/Documents/UVG Semestres/Repositorios/8vo Semestre/Data science/DataScienceProject1/CSV")
+setwd("/home/paul/Documents/Semestre2/dataScience/DataScienceProject1/CSV")
+#setwd("C:/Users/Diego Sevilla/Documents/UVG Semestres/Repositorios/8vo Semestre/Data science/DataScienceProject1/CSV")
 # setwd("C:/Users/Oscar/Desktop/UVG/Semestre8/DataScience/DataScienceProject1/CSV")
 
 AVerapaz = read.csv("altaVerapaz.csv",stringsAsFactors = FALSE, na.strings = TRUE, strip.white = TRUE,sep = ";", encoding="UTF-8" )
@@ -180,7 +180,7 @@ dplyr::distinct(lista2)
 
 FULLDATASET$ESTABLECIMIENTO[FULLDATASET$ESTABLECIMIENTO == "CPUM LICEO 'SAN LUIS'"] <- "COLEGIO PRIVADO URBANO MIXTO LICEO 'SAN LUIS'"
 FULLDATASET$ESTABLECIMIENTO[FULLDATASET$ESTABLECIMIENTO == "CPMI DE CIENCIAS COMERCIALES 'EL ADELANTO'"] <- "COLEGIO PARTICULAR MIXTO DE CIENCIAS COMERCIALES 'EL ADELANTO'"
-FULLDATASET$ESTABLECIMIENTO[FULLDATASET$ESTABLECIMIENTO == "ENBI OXLAJUJ NO´OJ"] <- "ESCUELA NORMAL BILINGÜE INTERCULTURAL OXLAJUJ NO´OJ"
+FULLDATASET$ESTABLECIMIENTO[FULLDATASET$ESTABLECIMIENTO == "ENBI OXLAJUJ NO?OJ"] <- "ESCUELA NORMAL BILING?E INTERCULTURAL OXLAJUJ NO?OJ"
 FULLDATASET$ESTABLECIMIENTO[FULLDATASET$ESTABLECIMIENTO == "INSTITUTO PRIVADO MIXTO DE EDUC. BASICA Y BACHILLERATO POR MADUREZ"] <- "INSTITUTO PRIVADO MIXTO DE EDUCACION BASICA Y BACHILLERATO POR MADUREZ"
 
 View(FULLDATASET)
@@ -235,12 +235,16 @@ FULLDATASET2$ESTABLECIMIENTO[FULLDATASET2$ESTABLECIMIENTO == "EORM"] <- "ESCUELA
 FULLDATASET2[which(FULLDATASET2$ESTABLECIMIENTO == "INED"),]
 FULLDATASET2$ESTABLECIMIENTO[FULLDATASET2$ESTABLECIMIENTO == "INED"] <- "INSTITUTO NACIONAL DE EDUCACION DIVERSIFICADA"
 
-FULLDATASET2[FULLDATASET2$CODIGO == "16-01-0672-46",]
-FULLDATASET2[FULLDATASET2$CODIGO == "14-13-1096-46",]
-FULLDATASET2[FULLDATASET2$CODIGO == "13-26-0182-46",]
-
 #View(FULLDATASET)
 View(FULLDATASET2)
+
+DATAdePAUL <- FULLDATASET2[which( FULLDATASET2$DEPARTAMENTO == "ALTA VERAPAZ" 
+                                |FULLDATASET2$DEPARTAMENTO == "QUICHE"
+                                | FULLDATASET2$DEPARTAMENTO == "HUEHUETENANGO"
+                                | FULLDATASET2$DEPARTAMENTO == "PETEN"
+                                ),]
+
+View(DATAdePAUL)
 #-----------------------------Fin --------------------------------------------
 #Encontramos los duplicados (sin contar el codigo sino que todos los demas campos)
 Duplicados<-FULLDATASET[duplicated(FULLDATASET[,2:17]),]
@@ -516,8 +520,8 @@ for (variable in listaCasosEspeciales) {
   print(DATA3[variable,6])
 }
 
-# CASOS ESPECíFICOS A NOTAR
-#1. #¿NOMBRE?
+# CASOS ESPEC?FICOS A NOTAR
+#1. #?NOMBRE?
 DATA3[538,6] <- "CENTRO DE EDUCACION EXTRAESCOLAR ESCUELA DE CAFICULTURA ANTIGUA COFEE"
 
 DATA3[633,6] <- "JUDA"
@@ -588,6 +592,6 @@ View(DATA3)
 str(DATA3)
 
 ###SE HACE RBIND A TODOS LOS DATASETS 
-FULLDATASET_clean <- rbind( "DATAdeJOSE", DATATEJ, "DATAdePAUL",DATASEV,DATA3)
+FULLDATASET_clean <- rbind( "DATAdeJOSE", DATATEJ, DATAdePAUL ,DATASEV,DATA3)
 View(FULLDATASET_clean)
 
