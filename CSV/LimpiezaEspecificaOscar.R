@@ -31,7 +31,7 @@ library(stringi)
 library(stringr)
 ##------------------FIN ZONA LIBRERIAS------------------
 
-# setwd("C:/Users/Usuario/Desktop/UVG/Semestre8/DataScience/DataScienceProject1/CSV")
+# setwd("C:/Users/Oscar/Desktop/UVG/Semestre8/DataScience/DataScienceProject1/CSV")
 
 AVerapaz = read.csv("altaVerapaz.csv",stringsAsFactors = FALSE, na.strings = TRUE, strip.white = TRUE,sep = ";", encoding="UTF-8" )
 BVerapaz = read.csv("bajaVerapaz.csv",stringsAsFactors = FALSE, na.strings = TRUE, strip.white = TRUE,sep = ";" , encoding="UTF-8" )
@@ -162,14 +162,14 @@ DATA3<-FULLDATASET[which(FULLDATASET$DEPARTAMENTO == "SUCHITEPEQUEZ"
 
 
 ##Se cuentan NA en cada columna
-sum(is.na(DATA3$TELEFONO))        #1377
-sum(is.na(DATA3$DISTRITO))        #193
+sum(is.na(DATA3$TELEFONO))        #71
+sum(is.na(DATA3$DISTRITO))        #12
 sum(is.na(DATA3$DEPARTAMENTO))
 sum(is.na(DATA3$MUNICIPIO))
 sum(is.na(DATA3$ESTABLECIMIENTO)) #0
-sum(is.na(DATA3$DIRECCION))       #49
-sum(is.na(DATA3$DIRECTOR))        #3642
-sum(is.na(DATA3$SUPERVISOR))      #195
+sum(is.na(DATA3$DIRECCION))       #3
+sum(is.na(DATA3$DIRECTOR))        #248
+sum(is.na(DATA3$SUPERVISOR))      #13
 sum(is.na(DATA3$NIVEL)) 
 sum(is.na(DATA3$AREA)) 
 sum(is.na(DATA3$STATUS))
@@ -177,7 +177,7 @@ sum(is.na(DATA3$MODALIDAD))
 sum(is.na(DATA3$JORNADA))
 sum(is.na(DATA3$PLAN))
 sum(is.na(DATA3$DEPARTAMENTAL))
-sum(is.na(DATA3$SUPERVISOR))      #195
+sum(is.na(DATA3$SUPERVISOR))      #13
 
 #Agregamos un numero de linea
 DATA3$NO_LINEA <- seq.int(nrow(DATA3))
@@ -191,20 +191,11 @@ for (variable in listaCasosEspeciales) {
   print(DATA3[variable,6])
 }
 
-# CASOS ESPECÍFICOS A NOTAR EN DONDE LOS ESTABLECIMIENTOS REPITEN SIGLAS
-#1. EODP EODP
-DATA3[6777,6] <- "EODP"
+# CASOS ESPEC�FICOS A NOTAR
+#1. #�NOMBRE?
+DATA3[538,6] <- "CENTRO DE EDUCACION EXTRAESCOLAR ESCUELA DE CAFICULTURA ANTIGUA COFEE"
 
-#2. EPRM EPRM
-DATA3[6759,6] <- "EPRM"
-
-#3. #¿NOMBRE?
-# Validado acorde al código de establecimiento y la página del mineduc
-DATA3[3857,6] <- "CENTRO DE EDUCACION EXTRAESCOLAR ESCUELA DE CAFICULTURA ANTIGUA COFEE"
-
-#4. EPUM MIXTA (EPUM es ESCUELA PRIVADA URBANA MIXTA) por lo que se repite la palabra Mixta
-DATA3[2132,6] <-  "EPUM COLEGIO 'ZARAGOZA' 7A. AVENIDA NORTE NO.10"
-
+DATA3[633,6] <- "JUDA"
 
 #miramos palabras mas cortas con SIGLAS
 for (variable in DATA3$ESTABLECIMIENTO) {
@@ -220,106 +211,15 @@ for (variable in DATA3$ESTABLECIMIENTO) {
 #Resultado 1: "INED"
 DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "INED", replacement = "INSTITUTO NACIONAL DE EDUCACION DIVERSIFICADA", fixed = TRUE)
 
-#Resultado 2: "EORM"
-DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "EORM", replacement = "ESCUELA OFICIAL RURAL MIXTA", fixed = TRUE)
-
-#Resultado 3: "INEB"
-DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "INEB", replacement = "INSTITUCION NACIONAL DE EDUCACION BASICA", fixed = TRUE)
-
-#Resultado 4: "EPRM"
-DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "EPRM", replacement = "ESCUELA PRIVADA RURAL MIXTA", fixed = TRUE)
-
-#Resultado 5: "IEBC"
-DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "IEBC", replacement = "INSTITUTO DE EDUCACION BASICA COOPERATIVA", fixed = TRUE)
-
-#Resultado 6: "EODP"
-DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "EODP", replacement = "ESCUELA OFICIAL DE PARVULOS", fixed = TRUE)
-
-#Resultado 7: "EOUM"
-DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "EOUM", replacement = "ESCUELA OFICIAL URBANA MIXTA", fixed = TRUE)
-
-#Resultado 8: "EOUN"
-DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "EOUN", replacement = "ESCUELA OFICIAL URBANA DE NIÑAS", fixed = TRUE)
-
-#Resultado 9: "EOPA"
-DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "EOPA", replacement = "ESCUELA OFICIAL PARA ADULTOS", fixed = TRUE)
-
-#Resultado 10: "EOUV"
-DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "EOUV", replacement = "ESCUELA OFICIAL URBANA DE VARONES", fixed = TRUE)
-
-#Resultado 11: "COPB"
-DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "COPB", replacement = "CENTRO OFICIAL DE PREPRIMARIA BILINGUE", fixed = TRUE)
-
-#Resultado 12: "EORN"
-DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "EORN", replacement = "ESCUELA OFICIAL RURAL DE NI?AS", fixed = TRUE)
-
-#Resultado 13: "EMRM"
-DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "EMRM", replacement = "ESCUELA MUNICIPAL RURAL MIXTA", fixed = TRUE)
-
-#Resultado 14: "IEEB"
-DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "IEEB", replacement = "INSTITUTO EXPERIMENTAL DE EDUCACION BASICA", fixed = TRUE)
-
-#Resultado 15: "EMUM"
-DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "EMUM", replacement = "ESCUELA MUNICIPAL URBANA MIXTA", fixed = TRUE)
-
-#Resultado 16: "EORV"
-DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "EORV", replacement = "ESCUELA MUNICIPAL URBANA MIXTA", fixed = TRUE)
-
-#Resultado 17: "ERMP"
-DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "ERMP", replacement = "ESCUELA RURAL MIXTA DE PARVULOS", fixed = TRUE)
-
-#Resultado 18: "CEIN"
-DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "CEIN", replacement = "CENTRO DE EDUCACION INTEGRAL", fixed = TRUE)
-
-#Resultado 19: "PAIN"
-DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "PAIN", replacement = "PROYECTO DE ATENCION AL NIÑO Y LA NIÑA", fixed = TRUE)
-
-
 #Ahora para ver si tenemos otras siglas integradas a strings
 lista<-c()
-filas<-C()
+filas<-c()
 for (variable in DATA3$ESTABLECIMIENTO) {
   lista<-c(lista,substr(variable, 0, regexpr(' ', variable)))
 }
 
 lista2<-as.data.frame(lista)
 dplyr::distinct(lista2)
-
-
-#Resultado 20: "CEEX"
-DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "CEEX", replacement = "CENTRO DE EDUCACION EXTRAESCOLAR", fixed = TRUE)
-
-#Resultado 21: "CEES"
-DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "CEES", replacement = "CENTRO DE EDUCACION ESPECIAL", fixed = TRUE)
-
-#Resultado 22: "CPRM"
-DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "CPRM", replacement = "COLEGIO PRIVADO RURAL MIXTO", fixed = TRUE)
-
-#Resultado 23: "EPPA"
-DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "EPPA", replacement = "ESCUELA PRIVADA PARA ADULTOS", fixed = TRUE)
-
-#Resultado 24: "IPMB"
-DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "IPMB", replacement = "INSTITUTO PRIVADO MIXTO DE EDUCACION BASICA", fixed = TRUE)
-
-#Resultado 25: "CPMI"
-DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "CPMI", replacement = "COLEGIO PARTICULAR MIXTO", fixed = TRUE)
-
-#Resultado 26: "EPUM"
-DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "EPUM", replacement = "ESCUELA PRIVADA URBANA MIXTA", fixed = TRUE)
-
-#Resultado 27: "EMDP"
-DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "EMDP", replacement = "ESTUDIOS MULTIDIMENSIONALES DE PAIS", fixed = TRUE)
-
-#Resultado 28: "EPDP"
-DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "EPDP", replacement = "ESCUELA PRIVADA DE PARVULOS", fixed = TRUE)
-
-#Resultado 29: "EUMP"
-DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "EUMP", replacement = "ESCUELA URBANA MIXTA DE PARVULOS", fixed = TRUE)
-
-#Resultado 30: "CPUM"
-DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "CPUM", replacement = "COLEGIO PRIVADO URBANO MIXTO", fixed = TRUE)
-
-
 
 # REEMPLAZANDO ABREVIACIONES:
 #1. INST.
@@ -332,33 +232,17 @@ DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "EDUC.", 
 # REEMPLAZANDO PALABRAS MAL ESCRITAS:
 #1. COELGIO
 DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "COELGIO", replacement = "COLEGIO", fixed = FALSE)
+
 #2. INSTITITO, INSTIUTO o INTITUTO
 DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "INSTITITO|INSTIUTO|INTITUTO", replacement = "INSTITUTO", fixed = FALSE)
+
 #3. CENTREO
 DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "CENTREO", replacement = "CENTRO", fixed = FALSE)
-#4. NUCLE
-DATA3[2753,6] <- "NUCLEO FAMILIAR EDUCATIVO PARA EL DESARROLLO N. 317"
-#4. COLEGI
-DATA3[3238,6] <- "COLEGIO LICEO RURAL MIXTO TULULA"
 
 
-#PATRON DE "LICEO-----------------------
+#PATRON DE 'TECNOLOGICO-----------------------
 # create a pattern to use (the same as you would do when using the LIKE operator)
-ptn = "^'LICEO.*?"  # gets beige and berry but not blueberry
-# execute a pattern-matching function on your data to create an index vector
-ndx = grep(ptn, DATA3$ESTABLECIMIENTO, perl=T)
-# use this index vector to extract the rows you want from the data frome:
-selected_rows = DATA3[ndx,c(1,6)]
-
-print(selected_rows)
-
-# filas a cambiar con el patron
-DATA3$ESTABLECIMIENTO[DATA3$ESTABLECIMIENTO == "'LICEO CRISTIANO JERUSALEN'"] <- "LICEO CRISTIANO JERUSALEN"
-
-
-#PATRON DE 'COLEGIO-----------------------
-# create a pattern to use (the same as you would do when using the LIKE operator)
-ptn = "^'COLE.*?"  # gets beige and berry but not blueberry
+ptn = "^'EL*?"  # gets beige and berry but not blueberry
 # execute a pattern-matching function on your data to create an index vector
 ndx = grep(ptn, DATA3$ESTABLECIMIENTO, perl=T)
 # use this index vector to extract the rows you want from the data frome:
@@ -368,7 +252,6 @@ selected_rows = DATA3[ndx,c(1,6)]
 for (row in selected_rows$NO_LINEA) {
   DATA3[row,6] <- gsub("'", '', DATA3[row,6])
 }
-
 
 #removemos la data de las variables
 rm(ptn, ndx, selected_rows, lista, variable, lista2, listaCasosEspeciales)
