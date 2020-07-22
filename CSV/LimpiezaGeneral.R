@@ -28,12 +28,15 @@ library(neural)
 library(dummy)
 library(neuralnet)
 library(stringi)
+library(stringr)
 ##------------------FIN ZONA LIBRERIAS------------------
 
 getwd()
+setwd("C:/Users/josea/Desktop/Universidad/2020/DataScience/Proyecto1/DataScienceProject1/CSV")
 #setwd("C:/Users/josea/Desktop/Universidad/2020/DataScience/Proyecto1/DataScienceProject1/CSV")
-#setwd("C:/Users/Diego Sevilla/Documents/UVG Semestres/Repositorios/8vo Semestre/Data science/DataScienceProject1/CSV")
-setwd("/home/paul/Documents/Semestre2/dataScience/DataScienceProject1/CSV")
+#setwd("/home/paul/Documents/Semestre2/dataScience/DataScienceProject1/CSV")
+setwd("C:/Users/Diego Sevilla/Documents/UVG Semestres/Repositorios/8vo Semestre/Data science/DataScienceProject1/CSV")
+# setwd("C:/Users/Oscar/Desktop/UVG/Semestre8/DataScience/DataScienceProject1/CSV")
 
 AVerapaz = read.csv("altaVerapaz.csv",stringsAsFactors = FALSE, na.strings = TRUE, strip.white = TRUE,sep = ";", encoding="UTF-8" )
 BVerapaz = read.csv("bajaVerapaz.csv",stringsAsFactors = FALSE, na.strings = TRUE, strip.white = TRUE,sep = ";" , encoding="UTF-8" )
@@ -121,11 +124,10 @@ FULLDATASET$DIRECTOR[FULLDATASET$DIRECTOR=="--------"] <- NA
 FULLDATASET$DIRECTOR[FULLDATASET$DIRECTOR=="---------"] <- NA
 FULLDATASET$DIRECTOR[FULLDATASET$DIRECTOR=="----------"] <- NA
 
-	
 
 	
 
-View(FULLDATASET)
+#View(FULLDATASET)
 ##Se cuentan NA en cada columna
 sum(is.na(FULLDATASET$TELEFONO))        #1780
 sum(is.na(FULLDATASET$DISTRITO))        #323
@@ -148,7 +150,45 @@ View(FULLDATASET)
 
 #removemos duplicados
 
-## LIMPIEZA ESPECIFICA Pete, quiche, alta verapaz , hueheu--------------------
+###JOSE
+#LIMPIEZA ESPECIFICA BAJA VERAPAZ, SAN MARACOS, QUETZALTENANGO, TOTONICAPAN, SOLOLA------------------------------------------------------------------------------------------------------
+View(FULLDATASET$DEPARTAMENTO)
+JOSE<-FULLDATASET[which(FULLDATASET$DEPARTAMENTO == "BAJA VERAPAZ" 
+                        | FULLDATASET$DEPARTAMENTO == "SAN MARCOS"
+                        | FULLDATASET$DEPARTAMENTO == "QUETZALTENANGO"
+                        | FULLDATASET$DEPARTAMENTO == "OTONICAPAN"
+                        | FULLDATASET$DEPARTAMENTO == "SOLOLA"),]
+
+View(JOSE)
+#Con esto identificamos los nombres menores a x longitud
+for (variable in JOSE) {
+  if(nchar(variable)<14)
+  {
+    print(variable)
+  }
+}
+
+#Con esto revisamos la primera palabra del nombre
+lista<-c();
+for (variable in JOSE) {
+  lista<-c(lista,substr(variable, 0, regexpr(' ', variable)))
+}
+
+lista2<-as.data.frame(lista)
+dplyr::distinct(lista2)
+
+
+FULLDATASET$ESTABLECIMIENTO[FULLDATASET$ESTABLECIMIENTO == "CPUM LICEO 'SAN LUIS'"] <- "COLEGIO PRIVADO URBANO MIXTO LICEO 'SAN LUIS'"
+FULLDATASET$ESTABLECIMIENTO[FULLDATASET$ESTABLECIMIENTO == "CPMI DE CIENCIAS COMERCIALES 'EL ADELANTO'"] <- "COLEGIO PARTICULAR MIXTO DE CIENCIAS COMERCIALES 'EL ADELANTO'"
+FULLDATASET$ESTABLECIMIENTO[FULLDATASET$ESTABLECIMIENTO == "ENBI OXLAJUJ NO´OJ"] <- "ESCUELA NORMAL BILINGÜE INTERCULTURAL OXLAJUJ NO´OJ"
+FULLDATASET$ESTABLECIMIENTO[FULLDATASET$ESTABLECIMIENTO == "INSTITUTO PRIVADO MIXTO DE EDUC. BASICA Y BACHILLERATO POR MADUREZ"] <- "INSTITUTO PRIVADO MIXTO DE EDUCACION BASICA Y BACHILLERATO POR MADUREZ"
+
+View(FULLDATASET)
+#####------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+##PAUL
+## LIMPIEZA ESPECIFICA Pete, quiche, alta verapaz , hueheu--------------------------------------------------------------------------------------------------------------------------------
 
 AltaRechazados = c(
 "16-01-0666-46", "16-03-0076-46", "16-04-0041-46", "16-04-0046-46", "16-04-0072-46", #16-01-0672-46 *ICA* 
@@ -199,16 +239,18 @@ FULLDATASET2[FULLDATASET2$CODIGO == "16-01-0672-46",]
 FULLDATASET2[FULLDATASET2$CODIGO == "14-13-1096-46",]
 FULLDATASET2[FULLDATASET2$CODIGO == "13-26-0182-46",]
 
-View(FULLDATASET)
+#View(FULLDATASET)
 View(FULLDATASET2)
 #-----------------------------Fin --------------------------------------------
 #Encontramos los duplicados (sin contar el codigo sino que todos los demas campos)
 Duplicados<-FULLDATASET[duplicated(FULLDATASET[,2:17]),]
 #Eliminamos los duplicados y los volvemos asignar
 FULLDATASET<-FULLDATASET[!duplicated(FULLDATASET[,2:17]),]
-#------------------------TEJADA ZONE----------------------
+#####------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-## LIMPIEZA ESPECIFICA JALAPA, CHIQUIMULA, EL PROGRESO, ZACAPA, IZABAL--------------------
+
+##TEJADA
+## LIMPIEZA ESPECIFICA JALAPA, CHIQUIMULA, EL PROGRESO, ZACAPA, IZABAL-------------------------------------------------------------------------------------------------------------------
 
 DATATEJ<-FULLDATASET[which(FULLDATASET$DEPARTAMENTO == "CHIQUIMULA" 
                          | FULLDATASET$DEPARTAMENTO == "JALAPA"
@@ -328,13 +370,12 @@ DATATEJ$NO_LINEA<-NULL
 #LIMPIEZA FINAL
 View(DATATEJ)
 str(DATATEJ)
-##/--------------**--* FINALIZA LIMPIEZA ESPEC?FICA JALAPA, CHIQUIMULA, EL PROGRESO, ZACAPA, IZABAL
-#------------------FIN TEJADA ZONE------------------------------
+#####------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-##------------------------SEVILLA ZONE----------------------
-## LIMPIEZA ESPECIFICA GUATEMALA, ESCUINTLA, SANTA ROSA, JUTIAPA--------------------
-View(FULLDATASET)
+##DIEGO
+## LIMPIEZA ESPECIFICA GUATEMALA, ESCUINTLA, SANTA ROSA, JUTIAPA-----------------------------------------------------------------------------------------------------------------
+#View(FULLDATASET)
 DATASEV<-FULLDATASET[which(FULLDATASET$DEPARTAMENTO == "GUATEMALA"
                          | FULLDATASET$DEPARTAMENTO == "ESCUINTLA"
                          | FULLDATASET$DEPARTAMENTO == "SANTA ROSA"
@@ -433,7 +474,120 @@ DATASEV$ESTABLECIMIENTO[DATASEV$ESTABLECIMIENTO == "CPUM COLEGIO MIXTO BILINGUE 
 
 View(DATASEV)
 str(DATASEV)
+#####------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-## FINALIZA LIMPIEZA ESPECIFICA GUATEMALA, ESCUINTLA, SANTA ROSA, JUTIAPA--------------------
-##------------------------FIN SEVILLA ZONE----------------------
+
+##OSCAR
+## LIMPIEZA ESPECIFICA SUCHITEPEQUEZ, SACATEPEQUEZ, RETALHULEU, CHIMALTENANGO --------------------
+
+DATA3<-FULLDATASET[which(FULLDATASET$DEPARTAMENTO == "SUCHITEPEQUEZ" 
+                         | FULLDATASET$DEPARTAMENTO == "SACATEPEQUEZ"
+                         | FULLDATASET$DEPARTAMENTO == "RETALHULEU"
+                         | FULLDATASET$DEPARTAMENTO == "CHIMALTENANGO"),]
+
+
+##Se cuentan NA en cada columna
+sum(is.na(DATA3$TELEFONO))        #71
+sum(is.na(DATA3$DISTRITO))        #12
+sum(is.na(DATA3$DEPARTAMENTO))
+sum(is.na(DATA3$MUNICIPIO))
+sum(is.na(DATA3$ESTABLECIMIENTO)) #0
+sum(is.na(DATA3$DIRECCION))       #3
+sum(is.na(DATA3$DIRECTOR))        #248
+sum(is.na(DATA3$SUPERVISOR))      #13
+sum(is.na(DATA3$NIVEL)) 
+sum(is.na(DATA3$AREA)) 
+sum(is.na(DATA3$STATUS))
+sum(is.na(DATA3$MODALIDAD))
+sum(is.na(DATA3$JORNADA))
+sum(is.na(DATA3$PLAN))
+sum(is.na(DATA3$DEPARTAMENTAL))
+sum(is.na(DATA3$SUPERVISOR))      #13
+
+#Agregamos un numero de linea
+DATA3$NO_LINEA <- seq.int(nrow(DATA3))
+#Reordenamos para que este al inicio
+DATA3<-DATA3[,c(18,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17)]
+
+
+listaCasosEspeciales <- c(DATA3[ nchar(DATA3$ESTABLECIMIENTO)<10 , 1])
+for (variable in listaCasosEspeciales) {
+  print(variable)
+  print(DATA3[variable,6])
+}
+
+# CASOS ESPECíFICOS A NOTAR
+#1. #¿NOMBRE?
+DATA3[538,6] <- "CENTRO DE EDUCACION EXTRAESCOLAR ESCUELA DE CAFICULTURA ANTIGUA COFEE"
+
+DATA3[633,6] <- "JUDA"
+
+#miramos palabras mas cortas con SIGLAS
+for (variable in DATA3$ESTABLECIMIENTO) {
+  if(nchar(variable)<10)
+  {
+    print(variable)
+  }
+}
+
+
+# RESULTADOS DEL CICLO FOR
+
+#Resultado 1: "INED"
+DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "INED", replacement = "INSTITUTO NACIONAL DE EDUCACION DIVERSIFICADA", fixed = TRUE)
+
+#Ahora para ver si tenemos otras siglas integradas a strings
+lista<-c()
+filas<-c()
+for (variable in DATA3$ESTABLECIMIENTO) {
+  lista<-c(lista,substr(variable, 0, regexpr(' ', variable)))
+}
+
+lista2<-as.data.frame(lista)
+dplyr::distinct(lista2)
+
+# REEMPLAZANDO ABREVIACIONES:
+#1. INST.
+DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "INST.", replacement = "INSTITUCION", fixed = TRUE)
+
+#2. EDUC.
+DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "EDUC.", replacement = "EDUCACION", fixed = TRUE)
+
+
+# REEMPLAZANDO PALABRAS MAL ESCRITAS:
+#1. COELGIO
+DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "COELGIO", replacement = "COLEGIO", fixed = FALSE)
+
+#2. INSTITITO, INSTIUTO o INTITUTO
+DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "INSTITITO|INSTIUTO|INTITUTO", replacement = "INSTITUTO", fixed = FALSE)
+
+#3. CENTREO
+DATA3$ESTABLECIMIENTO <- lapply(DATA3$ESTABLECIMIENTO, gsub, pattern = "CENTREO", replacement = "CENTRO", fixed = FALSE)
+
+
+#PATRON DE 'TECNOLOGICO-----------------------
+# create a pattern to use (the same as you would do when using the LIKE operator)
+ptn = "^'EL*?"  # gets beige and berry but not blueberry
+# execute a pattern-matching function on your data to create an index vector
+ndx = grep(ptn, DATA3$ESTABLECIMIENTO, perl=T)
+# use this index vector to extract the rows you want from the data frome:
+selected_rows = DATA3[ndx,c(1,6)]
+
+# Quitamos apostrophes de cada fila
+for (row in selected_rows$NO_LINEA) {
+  DATA3[row,6] <- gsub("'", '', DATA3[row,6])
+}
+
+#removemos la data de las variables
+rm(ptn, ndx, selected_rows, lista, variable, lista2, listaCasosEspeciales)
+
+#eliminamos la columna de numero
+DATA3$NO_LINEA<-NULL
+#LIMPIEZA FINAL
+View(DATA3)
+str(DATA3)
+
+###jose y pau
+FULLDATASET_clean <- rbind( "DATAdeJOSE", DATATEJ, "DATAdePAUL",DATASEV,DATA3)
+View(FULLDATASET_clean)
 
