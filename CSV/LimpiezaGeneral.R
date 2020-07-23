@@ -68,6 +68,9 @@ FULLDATASET <- rbind(AVerapaz, BVerapaz,Chima,Chiqui,Progreso,Escuintla,Guatemal
 
 ## Revisamos que esten los departamentos
 unique(FULLDATASET$DEPARTAMENTO)
+str(FULLDATASET)
+summary(FULLDATASET)
+
 
 ##Quitamos las tildes
 FULLDATASET$ESTABLECIMIENTO<-stri_trans_general(FULLDATASET$ESTABLECIMIENTO,"Latin-ASCII")
