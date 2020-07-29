@@ -29,12 +29,13 @@ library(dummy)
 library(neuralnet)
 library(stringi)
 library(stringr)
+library(data.table)
 ##------------------FIN ZONA LIBRERIAS------------------
 
 getwd()
-setwd("C:/Users/josea/Desktop/Universidad/2020/DataScience/Proyecto1/DataScienceProject1/CSV")
 #setwd("C:/Users/josea/Desktop/Universidad/2020/DataScience/Proyecto1/DataScienceProject1/CSV")
-setwd("/home/paul/Documents/Semestre2/dataScience/DataScienceProject1/CSV")
+#setwd("C:/Users/josea/Desktop/Universidad/2020/DataScience/Proyecto1/DataScienceProject1/CSV")
+#setwd("/home/paul/Documents/Semestre2/dataScience/DataScienceProject1/CSV")
 #setwd("C:/Users/Diego Sevilla/Documents/UVG Semestres/Repositorios/8vo Semestre/Data science/DataScienceProject1/CSV")
 # setwd("C:/Users/Oscar/Desktop/UVG/Semestre8/DataScience/DataScienceProject1/CSV")
 
@@ -65,7 +66,8 @@ Zacapa = read.csv("zacapa.csv",stringsAsFactors = FALSE, na.strings = TRUE, stri
 FULLDATASET <- rbind(AVerapaz, BVerapaz,Chima,Chiqui,Progreso,Escuintla,Guatemala,Huehue,Izabal,Jalapa,Jutiapa,Peten,
                      Quetza,Quiche,Reta,Sacate,SMarcos,SRosa,Solola,Suchi,Toto, Zacapa )
 
-
+# Aseguramos que la columna tenga el nombre adecuado
+colnames(FULLDATASET)[1] <- "CODIGO"
 ## Revisamos que esten los departamentos
 unique(FULLDATASET$DEPARTAMENTO)
 str(FULLDATASET)
@@ -595,6 +597,8 @@ View(DATA3)
 str(DATA3)
 
 ###SE HACE RBIND A TODOS LOS DATASETS 
-FULLDATASET_clean <- rbind( "DATAdeJOSE", DATATEJ, DATAdePAUL ,DATASEV,DATA3)
+FULLDATASET_clean <- rbind(JOSE, DATATEJ, DATAdePAUL ,DATASEV,DATA3)
 View(FULLDATASET_clean)
 
+# CREAR CSV LIMPIO
+fwrite(FULLDATASET_clean, file ="datos_limpios.csv", sep = ";")
